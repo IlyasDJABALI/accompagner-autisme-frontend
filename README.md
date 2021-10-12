@@ -1,2 +1,2 @@
-# accompagner-austisme-frontend
+# accompagner-autisme-frontend
 frontend du site Accompagner l'autisme
