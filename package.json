@@ -31,8 +31,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc",
-    "deploy": "npm run build && gcloud app deploy"
+    "type-check": "tsc"
   },
   "eslintConfig": {
     "extends": "react-app"
