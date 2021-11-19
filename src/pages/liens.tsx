@@ -1,28 +1,10 @@
-import Layout from "../components/Layout";
-import NextLink from "next/link";
-import Image from "next/image";
-import logo from "../../public/images/logo-AAA.png";
-import aBlue from "../../public/images/Ableu.png";
-import aYellow from "../../public/images/Ajaune.png";
-import aStripes from "../../public/images/Araye.png";
-import aAndStar from "../../public/images/A-et-etoile.png";
-
-import {
-  ChakraProvider,
-  theme,
-  Link,
-  Text,
-  Box,
-  Grid,
-  GridItem,
-  Center,
-  List,
-  ListItem,
-  HStack,
-  Heading,
-} from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-const AboutPage = () => (
+import {
+  ChakraProvider, Heading, Link, List,
+  ListItem, Text, theme
+} from "@chakra-ui/react";
+
+const LinksPage = () => (
   <ChakraProvider theme={theme}>
     <Text textAlign="justify" p={4}>
       Cette liste est amenée à être complétée régulièrement. N’hésitez pas à
@@ -247,4 +229,4 @@ const AboutPage = () => (
   </ChakraProvider>
 );
 
-export default AboutPage;
+export default LinksPage;

@@ -13,11 +13,11 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <link rel="icon" href="/images/favicon.ico" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:400,700&display=optional"
+            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=optional"
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Tangerine:400,700&display=optional"
+            href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=optional"
             rel="stylesheet"
           />
           <meta name="theme-color" content="#000000" />

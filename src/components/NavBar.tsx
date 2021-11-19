@@ -13,12 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Image from "next/image";
-import star from "../../public/images/star.png";
-import styles from "./NavBar.module.css";
 import { AiFillHome } from "react-icons/ai";
-import { useRouter } from 'next/router'
-
-
+import { useRouter } from 'next/router';
 
 const Links =
   '{ "links": [' +
@@ -43,13 +39,10 @@ const NavLink = ({ children, url, isActive }: { children: ReactNode; url: string
     >
       <HStack>
         <Image
-          src={star}
+          src='/images/star.png'
           alt="étoile"
-          className={styles.star}
-          // width={500} automatically provided
-          // height={500} automatically provided
-          // blurDataURL="data:..." automatically provided
-          // placeholder="blur" // Optional blur-up while loading
+          width="17"
+          height="16"
         />
         <Box>{children}</Box>
       </HStack>
