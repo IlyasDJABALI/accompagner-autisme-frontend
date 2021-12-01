@@ -25,7 +25,7 @@ const IndexPage = () => (
     <Box textAlign="center" m={4}>
       <Image src={logo} alt="logo" layout="fixed"/>
     </Box>
-
+    
     <Center>
       <Grid templateColumns="repeat(6, 1fr)" gap={2} w="md">
         <GridItem colSpan={1}>
@@ -97,7 +97,7 @@ const IndexPage = () => (
     </Center>
 
     <Text textAlign="justify" mb={4}>
-      Certaines parties du site sont encore en cours de construction, n'hésitez
+      Certaines parties du site sont encore en cours de construction, n&apos;hésitez
       pas à revenir régulièrement.
     </Text>
   </ChakraProvider>

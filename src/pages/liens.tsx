@@ -116,7 +116,7 @@ const LinksPage = () => (
             href="http://media.education.gouv.fr/file/ASH/57/5/guide_eleves_autistes_130575.pdf"
             isExternal
           >
-            Guide de scolarisation des élèves autistes publié par l'éducation nationale (PDF)
+            Guide de scolarisation des élèves autistes publié par l&apos;éducation nationale (PDF)
             <ExternalLinkIcon mx="2px" />
           </Link>
       </ListItem>
@@ -209,19 +209,19 @@ const LinksPage = () => (
     <List spacing={3}>
       <ListItem>
           <Link href="https://www.youtube.com/watch?v=qFLHNPnKYKY" isExternal>
-          "Le cerveau d’Hugo"
+          &quot;Le cerveau d’Hugo&quot;
             <ExternalLinkIcon mx="2px" />
           </Link>
       </ListItem>
       <ListItem>
           <Link href="https://www.youtube.com/watch?v=T_2lhIy_8zo" isExternal>
-          "Mon petit frère de la lune"
+          &quot;Mon petit frère de la lune&quot;
             <ExternalLinkIcon mx="2px" />
           </Link>
       </ListItem>
       <ListItem>
           <Link href="https://www.youtube.com/watch?v=-eHtZHH1AYQ" isExternal>
-          "Mon ami Tom"
+          &quot;Mon ami Tom&quot;
             <ExternalLinkIcon mx="2px" />
           </Link>
       </ListItem>

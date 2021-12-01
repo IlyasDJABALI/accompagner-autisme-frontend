@@ -44,7 +44,7 @@ const LegalPage = () => (
       <Heading as="h4" size="md">
         Hébergement
       </Heading>
-      <Text textAlign="justify">Le site est hébergé par Heroku.com.</Text>
+      <Text textAlign="justify">Le site est hébergé par Vercel.</Text>
       <Heading as="h4" size="md">
         Webmaster
       </Heading>
