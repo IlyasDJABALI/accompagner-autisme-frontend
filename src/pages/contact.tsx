@@ -1,23 +1,78 @@
 import {
+  Box,
   Button,
   ChakraProvider,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
-  FormHelperText,
-  Box,
+  Textarea,
   theme,
+  ToastId,
+  useToast,
+  UseToastOptions,
 } from "@chakra-ui/react";
-import { useFormik, FormikHelpers } from "formik";
+import { FormikHelpers, FormikState, useFormik } from "formik";
+import React from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import * as Yup from "yup";
-import useUser from "../lib/useUser";
+import fetchJson, { FetchError } from "../lib/fetchJson";
 
 interface Values {
   firstName: string;
   lastName: string;
   email: string;
+  subject: string;
+  message: string;
+  recaptcha: string;
 }
+
+interface ResponseDetails {
+  message: string;
+}
+
+const handlesubmit = async (
+  formValues: Values,
+  setSubmitting: { (isSubmitting: boolean): void; (arg0: boolean): void },
+  resetForm: (nextState?: Partial<FormikState<Values>> | undefined) => void,
+  toastRef: React.MutableRefObject<ToastId | undefined>,
+  updateToast: { (id: ToastId, options: Omit<UseToastOptions, "id">): void }
+) => {
+  try {
+    const response = await fetchJson<ResponseDetails>("/api/contact", {
+      method: "POST",
+      body: JSON.stringify({ data: formValues }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // Reset the form when the request has succeeeded
+    resetForm();
+    toastRef.current &&
+      updateToast(toastRef.current, {
+        title: "Message envoyé",
+        description: response.message,
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+  } catch (error) {
+    if (error instanceof FetchError) {
+      toastRef.current &&
+        updateToast(toastRef.current, {
+          title: "Oups :(",
+          description: error.data.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+    } else {
+      console.error("An unexpected error happened:", error);
+    }
+  } finally {
+    setSubmitting(false);
+  }
+};
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -29,22 +84,47 @@ const SignupSchema = Yup.object().shape({
     .max(50, "Trop long")
     .required("Requis"),
   email: Yup.string().email("Email invalide").required("Requis"),
+  subject: Yup.string()
+    .min(2, "Trop court")
+    .max(200, "Trop long")
+    .required("Requis"),
+  message: Yup.string()
+    .min(2, "Trop court")
+    .max(2000, "Trop long")
+    .required("Requis"),
+  recaptcha: Yup.string()
+    .nullable()
+    .required('Vous devez cocher la case "Je ne suis pas un robot"'),
 });
 
 const ContactPage = () => {
-
+  const recaptchaRef = React.createRef<ReCAPTCHA>();
+  const toastRef = React.useRef<ToastId>();
+  const toast = useToast();
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
       email: "",
+      subject: "",
+      message: "",
+      recaptcha: "",
     },
     validationSchema: SignupSchema,
-    onSubmit: (values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        setSubmitting(false);
-      }, 500);
+    onSubmit: (
+      values: Values,
+      { setSubmitting, resetForm }: FormikHelpers<Values>,
+    ) => {
+      handlesubmit(
+        values,
+        setSubmitting,
+        resetForm,
+        toastRef,
+        toast.update
+      );
+      toastRef.current = toast({});
+
+      recaptchaRef.current?.reset();
     },
   });
 
@@ -58,7 +138,6 @@ const ContactPage = () => {
             }
           >
             <FormLabel htmlFor="firstName">Prénom</FormLabel>
-            {/* <Input {...values.firstName} id="firstName" placeholder="firstName" /> */}
             <Input
               value={formik.values.firstName}
               name="firstName"
@@ -75,7 +154,6 @@ const ContactPage = () => {
             }
           >
             <FormLabel htmlFor="lastName">Nom</FormLabel>
-            {/* <Input {...values.lastName} id="lastName" placeholder="lastName" /> */}
             <Input
               value={formik.values.lastName}
               name="lastName"
@@ -89,7 +167,6 @@ const ContactPage = () => {
             isInvalid={Boolean(formik.errors.email) && formik.touched.email}
           >
             <FormLabel htmlFor="email">Email</FormLabel>
-            {/* <Input {...values.email} id="email" type="email" placeholder="email" /> */}
             <Input
               value={formik.values.email}
               id="email"
@@ -97,8 +174,53 @@ const ContactPage = () => {
               placeholder="Email"
               onChange={formik.handleChange}
             />
-            {/* <FormHelperText>We&apos;ll never share your email.</FormHelperText> */}
             <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={Boolean(formik.errors.subject) && formik.touched.subject}
+          >
+            <FormLabel htmlFor="subject">Sujet</FormLabel>
+            <Input
+              value={formik.values.subject}
+              name="subject"
+              id="subject"
+              placeholder="Sujet"
+              onChange={formik.handleChange}
+            />
+            {/* <FormHelperText>We&apos;ll never share your email.</FormHelperText> */}
+            <FormErrorMessage>{formik.errors.subject}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            isInvalid={Boolean(formik.errors.message) && formik.touched.message}
+          >
+            <FormLabel htmlFor="message">Message</FormLabel>
+            <Textarea
+              value={formik.values.message}
+              id="message"
+              type="message"
+              placeholder="Message"
+              onChange={formik.handleChange}
+            />
+            {/* <FormHelperText>We&apos;ll never share your email.</FormHelperText> */}
+            <FormErrorMessage>{formik.errors.message}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            py={3}
+            isInvalid={
+              Boolean(formik.errors.recaptcha) && formik.touched.recaptcha
+            }
+          >
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={
+                process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+                  ? process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+                  : ""
+              }
+              size="compact"
+              onChange={(v) => formik.setFieldValue("recaptcha", v)}
+            />
+            <FormErrorMessage>{formik.errors.recaptcha}</FormErrorMessage>
           </FormControl>
           <Button
             mt={4}

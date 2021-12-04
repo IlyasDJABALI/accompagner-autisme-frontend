@@ -16,7 +16,6 @@ import * as React from "react";
 import { ReactNode } from "react";
 import { AiFillHome } from "react-icons/ai";
 import fetchJson from "../lib/fetchJson";
-// import { UserContext } from "../lib/UserContext";
 import useUser from "../lib/useUser";
 
 interface NavItem {
