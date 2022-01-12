@@ -38,7 +38,7 @@ async function contactRoute(req: NextApiRequest, res: NextApiResponse) {
         );
         const captchaValidation = await response.json();
         /**
-         * The structure of response from the veirfy API is
+         * The structure of response from the verify API is
          * {
          *  "success": true|false,
          *  "challenge_ts": timestamp,  // timestamp of the challenge load (ISO format yyyy-MM-dd'T'HH:mm:ssZZ)
